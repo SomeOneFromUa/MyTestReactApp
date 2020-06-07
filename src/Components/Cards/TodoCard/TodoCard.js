@@ -16,10 +16,13 @@ export class TodoCard extends Component{
             isChacked: !this.state.isChacked
         })
     };
-
+onEdit = ()=>{
+    const {editFoo, todo} = this.props;
+    return editFoo(todo)
+};
     render() {
         const {isChacked} = this.state;
-        const {todo, foo, flag} = this.props;
+        const {todo, foo, flag, edit} = this.props;
         const {id, title, completed} = todo;
         return (
             <div
@@ -34,6 +37,7 @@ export class TodoCard extends Component{
                             {completed? 'complete': 'not complete'}
                         </p>
                         {flag && <button className={isChacked? 'btn btn-success': 'btn btn-light'} onClick={this.setCard}>{isChacked? 'chacked': 'check'}</button>}
+                        {edit && <button className='btn btn-info text-white' onClick={this.onEdit}> edit </button>}
                     </div>
             </div>
         );
