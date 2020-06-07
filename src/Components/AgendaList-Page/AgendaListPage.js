@@ -145,8 +145,8 @@ componentDidUpdate(prevProps, prevState, snapshot) {
                    {isAvalisable && <button className='btn btn-secondary' onClick={this.toogleBar}>check</button>}
                    {isAvalisable && [
                        <div className="btn-group" role="group" aria-label="Basic example">
-                           <button type="button" className="btn btn-secondary" onClick={this.notComleted}>Completed</button>
-                           <button type="button" className="btn btn-secondary" onClick={this.comleted}>Not Completed</button>
+                           <button type="button" className="btn btn-secondary" onClick={this.comleted}>Completed</button>
+                           <button type="button" className="btn btn-secondary" onClick={this.notComleted}>Not Completed</button>
                            <button type="button" className="btn btn-secondary" onClick={this.onDefault}>default</button>
                        </div>,
                        <DropDown onSelectFoo={this.onSelect} options={options} selectedItem={selected}/>
