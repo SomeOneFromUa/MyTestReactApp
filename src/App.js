@@ -1,26 +1,82 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
+import {UserList} from "./Components/UserList-page/UserList";
+import {Header} from "./Components/header/HeaderFromLecture";
+import {Footer} from "./Components/footer/Footer";
+import {UserPage} from "./Components/User-page/UserPage";
+import {PostList} from "./Components/PostList-page/PostListPage";
+import {AgendaListPage} from "./Components/AgendaList-Page/AgendaListPage";
+import {MyTodo} from './Components/AgendaList-Page/MyTodo'
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+
+
+
+
+class App extends Component {
+    state = {
+        arr: []
+    };
+
+    handler = (arr)=>{
+        this.setState({
+            arr: arr,
+        })
+    };
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log(this.state.arr);
+    }
+
+    render() {
+        const  {arr} = this.state;
+        return (
+            <div className='container-fluid'>
+                <Router>
+                    <Header flag={arr.length}/>
+                    <Switch>
+                        <Route path="/users/" exact
+                               render={(routerProps) => {
+                                   return (<UserList {...routerProps} />);
+                               }}
+                        />
+                        <Route path="/users/:id"
+                               render={(routerProps) => {
+                                   return (<UserPage {...routerProps} />);
+                               }}
+                        />
+                        <Route path="/posts/" exact
+                               render={(routerProps) => {
+                                   return (<PostList {...routerProps} />);
+                               }}
+                        />
+                        <Route path="/agenda/" exact
+                               render={(routerProps) => {
+                                   return (<AgendaListPage {...routerProps} handler={this.handler} />);
+                               }}
+                        />
+
+                        <Route path="/myTodo/" exact
+                               render={(routerProps) => {
+                                   return (<MyTodo {...routerProps} myTodos={arr} />);
+                               }}
+                        />
+                    </Switch>
+                    <Footer/>
+                </Router>
+            </div>
+        );
+    }
+
+
 }
 
 export default App;
