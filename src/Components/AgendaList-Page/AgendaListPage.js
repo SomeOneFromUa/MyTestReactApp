@@ -15,9 +15,14 @@ export class AgendaListPage extends Component{
         MyOwnTodos: [],
         isAvalisable: true
     };
+
     componentDidMount() {
         this.fetchToDos()
     }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log(this.state.MyOwnTodos );
+    }
+    //Стягую данні з сервера
     fetchToDos = async ()=>{
         this.setState({
             isDownloading: true
@@ -37,6 +42,8 @@ export class AgendaListPage extends Component{
         })
     };
 
+
+/////////////сортування///////////////////////////
     onSelect = (option)=>{
         switch (option) {
             case options[0]:
@@ -73,31 +80,33 @@ export class AgendaListPage extends Component{
             TodoCoppy: [...forLast, ...forFirst]
         })
     };
+///////////////////////////////////////////////////////////////////
+
+
+//////////////ф-ї кнопок/////////////////////////////////////////
     onDefault = ()=>{
         this.setState({
             selected: options[2],
             TodoCoppy: [...this.state.todos]
         })
     };
-    comleted = ()=>{
-        const {todos} = this.state;
-        const forFirst = todos.filter(todo => todo.completed);
-        this.setState({
-            TodoCoppy: [...forFirst],
-        })
-    };
-    notComleted = ()=>{
-        const {todos} = this.state;
-        const forLast = todos.filter(todo => !todo.completed);
-        this.setState({
-            TodoCoppy: [...forLast],
-        })
-    };
+    // completed = ()=>{
+    //     const {todos} = this.state;
+    //     const forFirst = todos.filter(todo => todo.completed);
+    //     this.setState({
+    //         TodoCoppy: [...forFirst],
+    //     })
+    // };
+    // notCompleted = ()=>{
+    //     const {todos} = this.state;
+    //     const forLast = todos.filter(todo => !todo.completed);
+    //     this.setState({
+    //         TodoCoppy: [...forLast],
+    //     })
+    // };
+////////////////////////////////////////////////////////////////
 
-componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log(this.state.MyOwnTodos );
-}
-
+////ф-ї які хендлять вибрані туду-шки сетають їх в стейт і пересилають на сторінку MyTodo
     handlerFromList = (id)=>{
     const flag = this.state.MyOwnTodos.includes(id);
     if (flag){
@@ -108,15 +117,13 @@ componentDidUpdate(prevProps, prevState, snapshot) {
         this.setState({
             MyOwnTodos: arr
         })
-    }
-         // this.state.MyOwnTodos.slice(this.state.MyOwnTodos.indexOf(id),1)
-         else {
+    } else {
              this.setState({
             MyOwnTodos: [...this.state.MyOwnTodos, id]
         })
-         }
-
+    }
     };
+
     toogleBar = ()=>{
         this.setState({
             isAvalisable: !this.state.isAvalisable
@@ -124,41 +131,66 @@ componentDidUpdate(prevProps, prevState, snapshot) {
     };
     onSave = ()=>{
         const {MyOwnTodos} = this.state;
+        //ця ф-я прилітає з app і закидує вибрані туду-шки в його стейт
+        // після чого вони прокидуються в MyTodo & header
         const {handler} = this.props;
         this.toogleBar();
-
         return handler(MyOwnTodos);
+/////////////////////////////////////////////////////////////////////////
 
     };
     render() {
         const {todos, isDownloaded, isDownloading, error, selected, TodoCoppy, MyOwnTodos, isAvalisable} = this.state;
         return(
             <div className='container'>
-               <div className='navbar navbar-light bg-light'>
+               <div className='navbar navbar-light bg-light justify-content-end'>
 
-                   {!isAvalisable &&
-                   <div className='d-flex '>
-                       {!!MyOwnTodos.length &&  <h5 className='navbar-brand'>{MyOwnTodos.length}</h5>}
-                       <button className='btn btn-secondary' onClick={this.onSave}>save</button>
+
+                   <div className="input-group-prepend ">
+                       {!!MyOwnTodos.length && !isAvalisable &&  <h5 className='input-group-text'>{MyOwnTodos.length}</h5>}
                    </div>
-                  }
+
+
+                      {!isAvalisable && <button className='btn btn-secondary' onClick={this.onSave}>save</button>}
+
+
                    {isAvalisable && <button className='btn btn-secondary' onClick={this.toogleBar}>check</button>}
-                   {isAvalisable && [
-                       <div className="btn-group" role="group" aria-label="Basic example">
-                           <button type="button" className="btn btn-secondary" onClick={this.comleted}>Completed</button>
-                           <button type="button" className="btn btn-secondary" onClick={this.notComleted}>Not Completed</button>
-                           <button type="button" className="btn btn-secondary" onClick={this.onDefault}>default</button>
-                       </div>,
-                       <DropDown onSelectFoo={this.onSelect} options={options} selectedItem={selected}/>
-                   ]}
+
+                        <div className='align-items-end'>
+                       <div className="btn-group "
+                            role="group"
+                            aria-label="Basic example">
+                           {/*<button type="button"*/}
+                           {/*        className="btn btn-secondary"*/}
+                           {/*        onClick={this.completed}>*/}
+                           {/*    Completed*/}
+                           {/*</button>*/}
+                           {/*<button type="button"*/}
+                           {/*        className="btn btn-secondary"*/}
+                           {/*        onClick={this.notCompleted}>*/}
+                           {/*    Not Completed*/}
+                           {/*</button>*/}
+                           <button type="button"
+                                   className="btn btn-secondary"
+                                   onClick={this.onDefault}>
+                               default
+                           </button>
+                           <DropDown onSelectFunc={this.onSelect}
+                                     options={options}
+                                     selectedItem={selected}/>
+                       </div>
+               </div>
+
                </div>
                 <div className='container d-flex flex-wrap'>
                     {isDownloading && <h6>Downloading...</h6>}
                     {!!error && <div>{error}</div>}
-                    {!isDownloading && !error && isDownloaded && TodoCoppy.map(todo => <TodoCard foo={this.handlerFromList} todo={todo} key={todo.id} flag={!isAvalisable}/>)}
+                    {!isDownloading && !error && isDownloaded && TodoCoppy.map(todo => <TodoCard func={this.handlerFromList}
+                                                                                                 todo={todo}
+                                                                                                 key={todo.id}
+                                                                                                 flag={!isAvalisable}/>)}
                 </div>
             </div>
-
         );
     }
 }

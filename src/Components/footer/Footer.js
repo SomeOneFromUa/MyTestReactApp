@@ -6,7 +6,7 @@ import './Footer.scss';
 
 export function Footer(props) {
   return (
-    <div className="may-footer">
+    <div className="may-footer fixed-bottom ">
       <div className="may-footer-content">
       <div className="may-footer-text">Some text about authors</div>
       <div className="may-footer-social-media-wrapper">
