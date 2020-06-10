@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {TodoCard} from "../Cards/TodoCard/TodoCard";
 import {DropDown} from "../dropdown/DropDown";
+import {ForPage} from "../downloading/forPage/forPage";
 
 const options = ['competed first', 'completed last', 'default'];
 
@@ -183,7 +184,7 @@ export class AgendaListPage extends Component{
 
                </div>
                 <div className='container d-flex flex-wrap'>
-                    {isDownloading && <h6>Downloading...</h6>}
+                    {isDownloading && <ForPage/>}
                     {!!error && <div>{error}</div>}
                     {!isDownloading && !error && isDownloaded && TodoCoppy.map(todo => <TodoCard func={this.handlerFromList}
                                                                                                  todo={todo}

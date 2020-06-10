@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {ForPage} from "../downloading/forPage/forPage";
 import {PostCard} from "../Cards/PostCard/PostCard";
 
 
@@ -53,7 +54,7 @@ setUserId = ()=>{
         const {posts, error, isDownloading, isDownloaded} = this.state;
         return(
             <div className={`${style || 'container d-flex flex-wrap'}`}>
-                {isDownloading && <h6>Downloading...</h6>}
+                {isDownloading && <ForPage/>}
                 {!!error && <div>{error}</div>}
                 {!isDownloading && !error && isDownloaded && posts.map(post => <PostCard post={post} key={post.id}/>)}
             </div>

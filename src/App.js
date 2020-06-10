@@ -14,6 +14,7 @@ import {UserPage} from "./Components/User-page/UserPage";
 import {PostList} from "./Components/PostList-page/PostListPage";
 import {AgendaListPage} from "./Components/AgendaList-Page/AgendaListPage";
 import {MyTodo} from './Components/AgendaList-Page/MyTodo'
+import {PostPreview} from "./Components/PostPreview-Page/PostPreview";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -69,6 +70,7 @@ class App extends Component {
                                    return (<MyTodo {...routerProps} myTodos={arr} />);
                                }}
                         />
+                        <Route path='/Post-preview/' exact component={PostPreview}/>
                     </Switch>
                     <Footer/>
                 </Router>

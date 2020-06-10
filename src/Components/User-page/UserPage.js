@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {UserCard} from "../Cards/UserCard/UserCard";
 import { withRouter } from 'react-router';
 import {PostList} from "../PostList-page/PostListPage";
+import {ForPage} from "../downloading/forPage/forPage";
 
 
 export class UserPageComponent extends Component{
@@ -40,8 +41,8 @@ export class UserPageComponent extends Component{
         const {user, error, isDownloading, isDownloaded} = this.state;
 
         return(
-            <div className='container d-flex '>
-                {isDownloading && <h6>Downloading...</h6>}
+            <div className='container d-flex justify-content-center '>
+                {isDownloading && <h6><ForPage/></h6>}
                 {!!error && <div>{error}</div>}
                 {!isDownloading && !error && isDownloaded && [
                 <UserCard flag={true} user={user}/>,

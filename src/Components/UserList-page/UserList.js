@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {ForPage} from "../downloading/forPage/forPage";
 import {UserCard} from "../Cards/UserCard/UserCard";
 
 
@@ -35,7 +36,7 @@ state = {
         const {users, error, isDownloading, isDownloaded} = this.state;
         return(
             <div className='container d-flex flex-wrap'>
-                {isDownloading && <h6>Downloading...</h6>}
+                {isDownloading && <ForPage/>}
                 {!!error && <div>{error}</div>}
                 {!isDownloading && !error && isDownloaded &&users.map(user => <UserCard flag={false} user={user} key={user.id}/>)}
             </div>

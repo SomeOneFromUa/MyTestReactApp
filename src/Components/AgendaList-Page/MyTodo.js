@@ -7,7 +7,8 @@ export class MyTodo extends Component{
         MyOwnTodos: [],
         text: '',
         checked: false,
-        curID: null
+        curID: null,
+        curEditTodo: null
     };
     componentDidMount() {
         const {myTodos} =  this.props;
@@ -44,7 +45,8 @@ export class MyTodo extends Component{
             MyOwnTodos: [newTodo, ...this.state.MyOwnTodos],
             text: '',
             checked: false,
-            curID: null
+            curID: null,
+            curEditTodo: null
         })
     };
 
@@ -56,7 +58,9 @@ export class MyTodo extends Component{
         this.setState({
             text: title,
             checked: completed,
-            curID: id
+            curID: id,
+            curEditTodo: object
+
         });
         //видалення із стейту об`єкту який редагується
         const {MyOwnTodos} = this.state;
@@ -78,7 +82,7 @@ export class MyTodo extends Component{
 
     render() {
 
-        const {text, MyOwnTodos, checked} = this.state;
+        const {text, MyOwnTodos, checked, curEditTodo} = this.state;
         return(
             <div className='container '>
                 <div className='row justify-content-start bg-secondary'>
@@ -111,8 +115,13 @@ export class MyTodo extends Component{
                                </div>
                        <button className='btn btn-secondary' type="submit">submit</button>
                    </form>
+
                </div>
+
+                        {!!curEditTodo &&  <TodoCard todo={curEditTodo} edit={false} />}
+
                 </div>
+
                 <div className='row bg-light'>
                 {MyOwnTodos.map(todo => <TodoCard todo={todo}
                                                   key={todo.id}

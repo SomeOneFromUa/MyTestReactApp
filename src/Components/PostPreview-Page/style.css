@@ -1,0 +1,14 @@
+.pos {
+    position: sticky;
+    right: 0;
+}
+.itemPosts {
+    cursor: pointer;
+}
+.itemPosts:hover {
+    background-color: dimgrey;
+    color: white
+}
+.itemPosts:active{
+    background-color: lightseagreen;
+}

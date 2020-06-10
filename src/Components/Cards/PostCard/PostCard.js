@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {withRouter} from 'react-router';
 import {Link} from "react-router-dom";
 import {Comment} from "../CommentsCard/Comment";
+import {ForCard} from '../../downloading/forCard/forCard'
 import './PostCardStyle.css'
 
 
@@ -11,7 +12,8 @@ export class PostCardComponent extends Component{
         author: '',
         idAuthor: '',
         postId: '',
-        comments: []
+        comments: [],
+        downloading: false
     };
     componentDidMount() {
         this.getAuthot();
@@ -23,14 +25,17 @@ export class PostCardComponent extends Component{
         await fetch(`https://jsonplaceholder.typicode.com/users/${this.state.idAuthor}`)
             .then(respons => respons.json())
             .then(json => this.setState({author: json}))
-
 };
 
     getCommetns = async ()=>{
+        this.setState({
+            downloading: true
+        });
         await this.setIdPost();
         await fetch(`https://jsonplaceholder.typicode.com/comments?postId=${this.state.postId}`)
             .then(respons => respons.json())
-            .then(json => this.setState({comments: json}))
+            .then(json => this.setState({comments: json, downloading: false }))
+
     };
 
 setId = ()=>{
@@ -39,7 +44,7 @@ setId = ()=>{
         idAuthor: userId
     })
 };
-    setIdPost = ()=>{
+setIdPost = ()=>{
         const {post: {id} } = this.props;
         this.setState({
             postId: id
@@ -52,10 +57,11 @@ toogle = ()=>{
 }
     render() {
         const {post, match: {url}} = this.props;
-        const {author,comments, isOpen} = this.state;
+        if (!post) return null;
+        const {author,comments, isOpen, downloading} = this.state;
         const {title, body, userId} = post;
         return(
-            <div className="card text-white bg-dark mb-3 align-self-center  w-100 myStyle">
+            <div  className="card text-white bg-dark mb-3 align-self-center  w-100 myStyle">
                 <div className='align-self-center'>
                     <img src={`http://placeimg.com/500/250/${Math.random()*100}`} alt="Card image cap"/>
                 </div>
@@ -71,7 +77,8 @@ toogle = ()=>{
                     </p>
                     <div>{userId}
                     <Link to={`/users/${author.id}`}>{author.name}</Link></div>
-                    {!!comments.length && <button onClick={this.toogle} className='btn btn-secondary'>
+                    {downloading && <ForCard/>}
+                    {!downloading && !!comments.length && <button onClick={this.toogle} className='btn btn-secondary'>
                         {isOpen? 'hide commetns': 'show comments'}
                     </button>}
                     {isOpen && comments.map(comment => <Comment comment={comment} key={comment.id}/>)
